@@ -1,5 +1,4 @@
 <resources>
-
     <string name="error_generic">An error occurred.</string>
     <string name="error_empty">This cannot be empty.</string>
     <string name="error_invalid_domain">Invalid domain entered</string>

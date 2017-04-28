@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.keylesspalace.tusky">
+
+    package="com.fiepi.mastodon">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".TuskyApplication">
+
         <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize">
@@ -36,76 +41,78 @@
                     android:host="@string/oauth_redirect_host"
                     android:scheme="@string/oauth_scheme" />
             </intent-filter>
+
+            <activity android:name=".MainActivity" />
+            <activity
+                android:name=".ComposeActivity"
+                android:windowSoftInputMode="stateVisible|adjustResize">
+                <intent-filter>
+                    <action android:name="android.intent.action.SEND" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:mimeType="text/plain" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="android.intent.action.SEND" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:mimeType="image/*" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="android.intent.action.SEND_MULTIPLE" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:mimeType="image/*" />
+                </intent-filter>
+            </activity>
+            <activity android:name=".ViewVideoActivity" android:configChanges="orientation|keyboardHidden|screenSize" />
+            <activity android:name=".ViewThreadActivity" />
+            <activity android:name=".ViewTagActivity" />
+            <activity android:name=".AccountActivity" />
+            <activity android:name=".EditProfileActivity" />
+            <activity android:name=".PreferencesActivity" />
+            <activity android:name=".FavouritesActivity" />
+            <activity android:name=".BlocksActivity" />
+            <activity
+                android:name=".ReportActivity"
+                android:windowSoftInputMode="stateVisible|adjustResize" />
+            <activity
+                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                android:theme="@style/Base.Theme.AppCompat" />
+
+            <service android:name=".MyFirebaseInstanceIdService" android:exported="true">
+                <intent-filter>
+                    <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                </intent-filter>
+            </service>
+
+            <service android:name=".MyFirebaseMessagingService" android:exported="true">
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                </intent-filter>
+            </service>
+
+            <receiver android:name=".NotificationClearBroadcastReceiver" />
+
+            <service
+                tools:targetApi="24"
+                android:name="com.fiepi.mastodon.TuskyTileService"
+                android:icon="@drawable/ic_send_24dp"
+                android:label="Compose Toot"
+                android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+                <intent-filter>
+                    <action android:name="android.service.quicksettings.action.QS_TILE" />
+                </intent-filter>
+            </service>
+
+            <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="com.fiepi.mastodon.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths" />
+            </provider>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".ComposeActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND_MULTIPLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ViewVideoActivity" android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".ViewThreadActivity" />
-        <activity android:name=".ViewTagActivity" />
-        <activity android:name=".AccountActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".PreferencesActivity" />
-        <activity android:name=".FavouritesActivity" />
-        <activity android:name=".BlocksActivity" />
-        <activity
-            android:name=".ReportActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
 
-        <service android:name=".MyFirebaseInstanceIdService" android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".MyFirebaseMessagingService" android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <receiver android:name=".NotificationClearBroadcastReceiver" />
-
-        <service
-            tools:targetApi="24"
-            android:name="com.keylesspalace.tusky.TuskyTileService"
-            android:icon="@drawable/ic_send_24dp"
-            android:label="Compose Toot"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.keylesspalace.tusky.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
     </application>
 
 </manifest>
